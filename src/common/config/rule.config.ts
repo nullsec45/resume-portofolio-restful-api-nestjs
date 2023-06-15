@@ -1,5 +1,6 @@
-import { IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import ApplicationEnvironment from './environments/app.environment';
+import DatabaseEnvironment from './environments/db.environment';
 
 export default class RuleConfig {
   @IsEnum(ApplicationEnvironment)
@@ -9,4 +10,22 @@ export default class RuleConfig {
   @IsNumber()
   @IsOptional()
   APP_PORT: number;
+
+  @IsEnum(DatabaseEnvironment)
+  DB_TYPE: string;
+
+  @IsString()
+  DB_HOST: string;
+
+  @IsNumber()
+  DB_PORT: number;
+
+  @IsString()
+  DB_USERNAME: string;
+
+  @IsString()
+  DB_PASSWORD: string;
+
+  @IsString()
+  DB_DATABASE: string;
 }
