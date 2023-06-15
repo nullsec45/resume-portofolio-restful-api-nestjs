@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -12,6 +13,8 @@ async function bootstrap() {
   );
   const configService = app.get(ConfigService);
   const port = configService.get<number>('app.port') || 3000;
+
+  app.use(helmet());
 
   await app.listen(port);
 }
