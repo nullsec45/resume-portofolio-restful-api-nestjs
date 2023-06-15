@@ -1,10 +1,22 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DynamicModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { validateConfig } from './common/config/validate.config';
+import RuleConfig from './common/config/rule.config';
+import { valueConfig } from './common/config/value.config';
 
-@Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
+@Module({})
+export class AppModule {
+  static register(envFilePath: string | string[] = '.env'): DynamicModule {
+    return {
+      module: AppModule,
+      imports: [
+        ConfigModule.forRoot({
+          envFilePath,
+          isGlobal: true,
+          load: valueConfig,
+          validate: validateConfig(RuleConfig),
+        }),
+      ],
+    };
+  }
+}
