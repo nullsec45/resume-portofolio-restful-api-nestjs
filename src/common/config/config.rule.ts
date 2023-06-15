@@ -2,7 +2,7 @@ import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import ApplicationEnvironment from './environments/app.environment';
 import DatabaseEnvironment from './environments/db.environment';
 
-export default class RuleConfig {
+export default class ConfigRule {
   @IsEnum(ApplicationEnvironment)
   @IsOptional()
   APP_ENV: string;

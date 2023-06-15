@@ -1,7 +1,7 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
-export const validateConfig =
+export const configValidation =
   (rule: ClassConstructor<object>) => (config: Record<string, unknown>) => {
     const validatedConfig = plainToInstance(rule, config, {
       enableImplicitConversion: true,

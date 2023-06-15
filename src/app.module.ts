@@ -1,8 +1,8 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { validateConfig } from './common/config/validate.config';
-import RuleConfig from './common/config/rule.config';
-import { valueConfig } from './common/config/value.config';
+import { configValidation } from './common/config/config.validation';
+import ConfigRule from './common/config/config.rule';
+import { configValue } from './common/config/config.value';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmService } from './common/typeorm/typeorm.service';
 
@@ -14,8 +14,8 @@ export class AppModule {
       imports: [
         ConfigModule.forRoot({
           envFilePath,
-          load: valueConfig,
-          validate: validateConfig(RuleConfig),
+          load: configValue,
+          validate: configValidation(ConfigRule),
         }),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
