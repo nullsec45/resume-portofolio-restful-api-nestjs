@@ -13,7 +13,7 @@ async function bootstrap() {
     },
   );
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('app.port') || 3000;
+  const port = configService.get<number>('app.port');
 
   app.use(helmet());
   app.enableVersioning({ type: VersioningType.URI });
