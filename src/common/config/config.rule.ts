@@ -28,4 +28,10 @@ export default class ConfigRule {
 
   @IsString()
   DB_DATABASE: string;
+
+  @IsString()
+  JWT_SECRET_KEY: string;
+
+  @IsNumber()
+  JWT_TOKEN_TTL_IN_SECONDS: number;
 }
