@@ -15,6 +15,7 @@ export class AppModule {
       module: AppModule,
       imports: [
         ConfigModule.forRoot({
+          isGlobal: true,
           envFilePath,
           load: configValue,
           validate: configValidation(ConfigRule),
