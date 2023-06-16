@@ -8,8 +8,6 @@ import {
   Request,
   UseGuards,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -25,14 +23,12 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  @UsePipes(new ValidationPipe({ transform: true }))
   signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
   }
 
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  @UsePipes(new ValidationPipe({ transform: true }))
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
