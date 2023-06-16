@@ -7,6 +7,7 @@ import {
   Post,
   Request,
   UseGuards,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,7 +16,9 @@ import { AuthService } from './auth.service';
 import { AuthorizedRequest } from './interface/authorized-request.interface';
 import { SignInDto } from './dto/sign-in.dto';
 import { RegisterDto } from './dto/register.dto';
+import { ResponseInterceptor } from '../common/response/response.interceptor';
 
+@UseInterceptors(ResponseInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
