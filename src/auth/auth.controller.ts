@@ -17,7 +17,7 @@ import { RegisterDto } from './dto/register.dto';
 import { ResponseInterceptor } from '../common/response/response.interceptor';
 
 @UseInterceptors(ResponseInterceptor)
-@Controller('auth')
+@Controller({ version: '1', path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
