@@ -12,7 +12,7 @@ export class RegisterDto {
   password: string;
 
   @Match(RegisterDto, (dto) => dto.password, {
-    message: 'password  and confirmPassword does not match',
+    message: 'password and confirmPassword does not match',
   })
   confirmPassword: string;
 }
