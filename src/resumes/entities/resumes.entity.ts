@@ -31,6 +31,9 @@ export class Resume {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.resumes)
+  @ManyToOne(() => User, (user) => user.resumes, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 }
