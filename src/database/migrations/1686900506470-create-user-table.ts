@@ -1,18 +1,55 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
 export class CreateUserTable1686900506470 implements MigrationInterface {
   name = 'CreateUserTable1686900506470';
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `CREATE TABLE \`user\` (\`id\` int NOT NULL AUTO_INCREMENT, \`username\` varchar(255) NOT NULL, \`password\` varchar(255) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), UNIQUE INDEX \`IDX_78a916df40e02a9deb1c4b75ed\` (\`username\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+  async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.createTable(
+      new Table({
+        name: 'user',
+        columns: [
+          {
+            name: 'id',
+            type: 'int',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          {
+            name: 'username',
+            type: 'varchar',
+            isUnique: true,
+          },
+          {
+            name: 'password',
+            type: 'varchar',
+          },
+          {
+            name: 'createdAt',
+            type: 'datetime',
+            precision: 6,
+            default: 'CURRENT_TIMESTAMP(6)',
+          },
+          {
+            name: 'updatedAt',
+            type: 'datetime',
+            precision: 6,
+            default: 'CURRENT_TIMESTAMP(6)',
+            onUpdate: 'CURRENT_TIMESTAMP(6)',
+          },
+        ],
+      }),
+      true,
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `DROP INDEX \`IDX_78a916df40e02a9deb1c4b75ed\` ON \`user\``,
-    );
-    await queryRunner.query(`DROP TABLE \`user\``);
+  async down(queryRunner: QueryRunner): Promise<void> {
+    const table = (await queryRunner.getTable('user')) as Table;
+    const index = table.indices.find((index) =>
+      index.columnNames.includes('username'),
+    ) as TableIndex;
+
+    await queryRunner.dropIndex(table, index);
+    await queryRunner.dropTable('user');
   }
 }
