@@ -13,8 +13,6 @@ import {
   Request,
   UploadedFile,
   ParseFilePipe,
-  MaxFileSizeValidator,
-  FileTypeValidator,
 } from '@nestjs/common';
 import { ResumesService } from './resumes.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
@@ -28,6 +26,7 @@ import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import fileValidators from './constants/file-validators.constant';
 
 @UseInterceptors(ResponseInterceptor)
 @Controller({ version: '1', path: 'resumes' })
@@ -44,10 +43,7 @@ export class ResumesController {
     @UploadedFile(
       new ParseFilePipe({
         fileIsRequired: false,
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 512000 }),
-          new FileTypeValidator({ fileType: 'image' }),
-        ],
+        validators: fileValidators,
       }),
     )
     file: Express.Multer.File | undefined,
