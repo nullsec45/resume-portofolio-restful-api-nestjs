@@ -71,13 +71,22 @@ export class ResumesController {
   @HttpCode(HttpStatus.OK)
   @Patch(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
+  @UseInterceptors(FileInterceptor('profilePicture'))
   update(
     @ResolvedResume() resume: Resume,
     @Body() updateResumeDto: UpdateResumeDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: fileValidators,
+      }),
+    )
+    file: Express.Multer.File | undefined,
   ) {
     return this.resumesService.save({
       ...resume,
       ...updateResumeDto,
+      profilePicture: file?.path ?? null,
     });
   }
 
