@@ -22,6 +22,9 @@ export class Resume {
   @Column()
   age: number;
 
+  @Column({ nullable: true, type: String })
+  profilePicture: string | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

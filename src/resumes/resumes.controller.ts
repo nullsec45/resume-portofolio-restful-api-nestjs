@@ -11,6 +11,10 @@ import {
   HttpCode,
   HttpStatus,
   Request,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { ResumesService } from './resumes.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
@@ -23,6 +27,7 @@ import ResumeAction from './enums/resume-action.enum';
 import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseInterceptors(ResponseInterceptor)
 @Controller({ version: '1', path: 'resumes' })
@@ -32,13 +37,25 @@ export class ResumesController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
+  @UseInterceptors(FileInterceptor('profilePicture'))
   create(
     @Request() req: AuthorizedRequest,
     @Body() createResumeDto: CreateResumeDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 512000 }),
+          new FileTypeValidator({ fileType: 'image' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File | undefined,
   ) {
     return this.resumesService.create({
-      userId: req.user.sub,
       ...createResumeDto,
+      userId: req.user.sub,
+      profilePicture: file?.path ?? null,
     });
   }
 

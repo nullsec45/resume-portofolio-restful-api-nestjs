@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateResumeDto } from './dto/create-resume.dto';
-import { UpdateResumeDto } from './dto/update-resume.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Resume } from './entities/resumes.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +11,10 @@ export class ResumesService {
     private readonly resumesRepository: Repository<Resume>,
   ) {}
 
-  create(createResumeDto: CreateResumeDto & Pick<Resume, 'userId'>) {
+  create(
+    createResumeDto: CreateResumeDto &
+      Pick<Resume, 'userId' | 'profilePicture'>,
+  ) {
     return this.resumesRepository.save(createResumeDto);
   }
 

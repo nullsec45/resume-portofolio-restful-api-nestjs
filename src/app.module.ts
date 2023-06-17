@@ -8,6 +8,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmService } from './common/typeorm/typeorm.service';
 import { AuthModule } from './auth/auth.module';
 import { ResumesModule } from './resumes/resumes.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({})
 export class AppModule {
@@ -24,6 +26,10 @@ export class AppModule {
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           useClass: TypeOrmService,
+        }),
+        ServeStaticModule.forRoot({
+          rootPath: join(__dirname, '..', 'public'),
+          serveRoot: '/public',
         }),
         AuthModule,
         UsersModule,
