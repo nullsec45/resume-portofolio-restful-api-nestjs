@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (token === undefined) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(`JWT token couldn't be found`);
     }
 
     try {
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
 
       request.user = payload;
     } catch {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(`Invalid JWT token`);
     }
 
     return true;
