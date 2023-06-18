@@ -8,5 +8,6 @@ import { Resume } from './entities/resumes.entity';
   imports: [TypeOrmModule.forFeature([Resume])],
   controllers: [ResumesController],
   providers: [ResumesService],
+  exports: [ResumesService],
 })
 export class ResumesModule {}

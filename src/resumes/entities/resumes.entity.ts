@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/users.entity';
+import { WorkExperience } from '../../work-experiences/entities/work-experiences.entity';
 
 @Entity()
 export class Resume {
@@ -36,4 +38,7 @@ export class Resume {
     onDelete: 'CASCADE',
   })
   user: User;
+
+  @OneToMany(() => WorkExperience, (workExperience) => workExperience.resume)
+  workExperiences: WorkExperience[];
 }
