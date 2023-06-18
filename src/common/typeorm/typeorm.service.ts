@@ -22,6 +22,11 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
         'development'
           ? true
           : false,
+      logging:
+        this.configService.get<`${ApplicationEnvironment}`>('app.env') ===
+        'development'
+          ? true
+          : false,
     };
   }
 }
