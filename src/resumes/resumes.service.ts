@@ -15,11 +15,9 @@ export class ResumesService {
     createResumeDto: CreateResumeDto &
       Pick<Resume, 'userId' | 'profilePicture'>,
   ) {
-    return this.resumesRepository.save(createResumeDto);
-  }
+    const resume = this.resumesRepository.create(createResumeDto);
 
-  findAll() {
-    return this.resumesRepository.find();
+    return this.resumesRepository.save(resume);
   }
 
   findAllByUserId(userId: number) {

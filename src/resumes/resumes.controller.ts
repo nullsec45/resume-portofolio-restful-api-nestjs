@@ -13,6 +13,7 @@ import {
   Request,
   UploadedFile,
   ParseFilePipe,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ResumesService } from './resumes.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
@@ -28,7 +29,7 @@ import { Resume } from './entities/resumes.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
 import fileValidators from './constants/file-validators.constant';
 
-@UseInterceptors(ResponseInterceptor)
+@UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
 @UseGuards(AuthGuard, ResumesGuard)
 export class ResumesController {
