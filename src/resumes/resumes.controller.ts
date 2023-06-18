@@ -26,8 +26,8 @@ import ResumeAction from './enums/resume-action.enum';
 import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
 import fileValidators from '../common/constants/file-validators.constant';
+import { UploadProfilePicture } from './decorators/upload-profile-picture.decorator';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
@@ -37,7 +37,7 @@ export class ResumesController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post()
-  @UseInterceptors(FileInterceptor('profilePicture'))
+  @UploadProfilePicture()
   create(
     @Request() req: AuthorizedRequest,
     @Body() createResumeDto: CreateResumeDto,
@@ -72,7 +72,7 @@ export class ResumesController {
   @HttpCode(HttpStatus.OK)
   @Patch(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
-  @UseInterceptors(FileInterceptor('profilePicture'))
+  @UploadProfilePicture()
   update(
     @ResolvedResume() resume: Resume,
     @Body() updateResumeDto: UpdateResumeDto,
