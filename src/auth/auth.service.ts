@@ -8,7 +8,6 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { SignInDto } from './dto/sign-in.dto';
-import { RegisteredUserDto } from './dto/registered-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -50,6 +49,6 @@ export class AuthService {
       password: await bcrypt.hash(registerDto.password, 8),
     });
 
-    return new RegisteredUserDto(createdUser);
+    return createdUser;
   }
 }

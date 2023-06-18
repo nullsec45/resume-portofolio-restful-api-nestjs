@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Resume } from '../../resumes/entities/resumes.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -19,6 +20,7 @@ export class User {
   username: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @CreateDateColumn()

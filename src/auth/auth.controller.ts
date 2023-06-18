@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -16,7 +17,7 @@ import { SignInDto } from './dto/sign-in.dto';
 import { RegisterDto } from './dto/register.dto';
 import { ResponseInterceptor } from '../common/response/response.interceptor';
 
-@UseInterceptors(ResponseInterceptor)
+@UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
