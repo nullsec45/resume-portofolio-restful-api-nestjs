@@ -27,7 +27,7 @@ import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
-import fileValidators from './constants/file-validators.constant';
+import fileValidators from '../common/constants/file-validators.constant';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
