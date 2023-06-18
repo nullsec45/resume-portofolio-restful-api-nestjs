@@ -3,16 +3,9 @@ import { ResumesService } from './resumes.service';
 import { ResumesController } from './resumes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Resume } from './entities/resumes.entity';
-import { MulterModule } from '@nestjs/platform-express';
-import { MulterConfigService } from '../common/multer/multer.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Resume]),
-    MulterModule.registerAsync({
-      useClass: MulterConfigService,
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([Resume])],
   controllers: [ResumesController],
   providers: [ResumesService],
 })
