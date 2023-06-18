@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { Match } from '../decorators/match.decorator';
 
 export class RegisterDto {
   @IsNotEmpty()
   @IsString()
+  @MaxLength(255)
   username: string;
 
   @IsNotEmpty()
