@@ -84,11 +84,12 @@ export class ResumesController {
     )
     file: Express.Multer.File | undefined,
   ) {
-    return this.resumesService.save({
-      ...resume,
-      ...updateResumeDto,
-      profilePicture: file?.path ?? null,
-    });
+    return this.resumesService.save(
+      Object.assign(resume, {
+        ...updateResumeDto,
+        profilePicture: file?.path ?? null,
+      }),
+    );
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
