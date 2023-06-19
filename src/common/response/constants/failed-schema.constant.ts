@@ -4,7 +4,7 @@ import { STATUS_CODES } from 'http';
 import { FailedResponseDto } from '../dto/failed-response.dto';
 
 export const FailedSchema = (
-  message: string,
+  message: string | string[],
   statusCode: HttpStatus,
 ): ApiResponseOptions => ({
   schema: {
