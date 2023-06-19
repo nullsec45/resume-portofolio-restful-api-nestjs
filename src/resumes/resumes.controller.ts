@@ -26,8 +26,8 @@ import { ResumeAction } from './enums/resume-action.enum';
 import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
-import fileValidators from '../common/constants/file-validators.constant';
 import { UploadProfilePicture } from './decorators/upload-profile-picture.decorator';
+import { parseImage } from '../common/pipes/parse-image.pipe';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
@@ -41,13 +41,7 @@ export class ResumesController {
   create(
     @Request() req: AuthorizedRequest,
     @Body() createResumeDto: CreateResumeDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        fileIsRequired: false,
-        validators: fileValidators,
-      }),
-    )
-    file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
   ) {
     return this.resumesService.create({
       ...createResumeDto,
@@ -76,13 +70,7 @@ export class ResumesController {
   update(
     @ResolvedResume() resume: Resume,
     @Body() updateResumeDto: UpdateResumeDto,
-    @UploadedFile(
-      new ParseFilePipe({
-        fileIsRequired: false,
-        validators: fileValidators,
-      }),
-    )
-    file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
   ) {
     return this.resumesService.save(
       Object.assign(resume, {
