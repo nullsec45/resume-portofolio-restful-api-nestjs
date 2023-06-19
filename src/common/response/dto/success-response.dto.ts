@@ -1,13 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SuccessResponseDto<T> {
+  /**
+   * The HTTP status code of the response.
+   *
+   * @example 200
+   */
   statusCode: number;
 
   /**
-   * @example "success" | "created"
+   * The message accompanying the response, if any.
+   *
+   * @example "OK"
    */
   message: string | null;
 
-  @ApiProperty({ type: () => Array<T> })
+  /**
+   * The data being returned in the response.
+   *
+   * @example
+    {
+      "data": {
+        "sub": 1,
+        "iat": 1624096800,
+        "exp": 1624097100
+      },
+      "statusCode": 200,
+      "message": "OK"
+    }
+   */
+  @ApiProperty({ type: () => Object })
   data: T;
 }
