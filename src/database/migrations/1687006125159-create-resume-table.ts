@@ -27,7 +27,6 @@ export class CreateResumeTable1687006125159 implements MigrationInterface {
           {
             name: 'name',
             type: 'varchar',
-            length: '255',
           },
           {
             name: 'age',
