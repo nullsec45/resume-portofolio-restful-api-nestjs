@@ -46,13 +46,13 @@ export class WorkExperiencesController {
   @CheckResumePolicy(ResumeAction.Manage)
   @UploadCompanyLogo()
   create(
-    @Param('resumeId') resumeId: string,
+    @Param('resumeId') resumeId: number,
     @Body() createWorkExperienceDto: CreateWorkExperienceDto,
     @UploadedFile(parseImage) file: Express.Multer.File | undefined,
   ) {
     return this.workExperiencesService.create({
       ...createWorkExperienceDto,
-      resumeId: Number(resumeId),
+      resumeId,
       companyLogo: file?.path ?? null,
     });
   }
@@ -62,7 +62,7 @@ export class WorkExperiencesController {
   @CheckResumePolicy(ResumeAction.Manage)
   @UploadCompanyLogos()
   creates(
-    @Param('resumeId') resumeId: string,
+    @Param('resumeId') resumeId: number,
     @Body() createWorkExperiencesDto: CreateWorkExperiencesDto,
     @UploadedFiles(parseImage) files: Array<Express.Multer.File>,
   ) {
@@ -74,7 +74,7 @@ export class WorkExperiencesController {
         startDate: createWorkExperiencesDto.startDate.at(i) as Date,
         endDate: createWorkExperiencesDto.endDate?.at(i) ?? null,
         companyLogo: files.at(i)?.path ?? null,
-        resumeId: Number(resumeId),
+        resumeId,
       }),
     );
 
@@ -84,8 +84,8 @@ export class WorkExperiencesController {
   @HttpCode(HttpStatus.OK)
   @Get('resumes/:resumeId/work-experiences')
   @CheckResumePolicy(ResumeAction.Manage)
-  findAll(@Param('resumeId') resumeId: string) {
-    return this.workExperiencesService.findAllByResumeId(Number(resumeId));
+  findAll(@Param('resumeId') resumeId: number) {
+    return this.workExperiencesService.findAllByResumeId(resumeId);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -115,7 +115,7 @@ export class WorkExperiencesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('work-experiences/:workExperienceId')
   @CheckWorkExperiencePolicy(WorkExperienceAction.Manage)
-  remove(@Param('workExperienceId') workExperienceId: string) {
-    return this.workExperiencesService.remove(Number(workExperienceId));
+  remove(@Param('workExperienceId') workExperienceId: number) {
+    return this.workExperiencesService.remove(workExperienceId);
   }
 }
