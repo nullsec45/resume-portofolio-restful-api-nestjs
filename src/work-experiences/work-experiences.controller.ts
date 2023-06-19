@@ -12,6 +12,7 @@ import {
   HttpStatus,
   ClassSerializerInterceptor,
   UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { WorkExperiencesService } from './work-experiences.service';
 import { CreateWorkExperienceDto } from './dto/create-work-experience.dto';
@@ -27,6 +28,9 @@ import { WorkExperienceAction } from './enums/work-experience-action.enum';
 import { ResolvedWorkExperience } from './decorators/resolved-work-experience.decorator';
 import { WorkExperience } from './entities/work-experiences.entity';
 import { UploadCompanyLogo } from './decorators/upload-company-logo.decorator';
+import { CreateWorkExperiencesDto } from './dto/create-work-experiences.dto';
+import { NewWorkExperience } from './types/new-work-experience.type';
+import { UploadCompanyLogos } from './decorators/upload-company-logos.decorator';
 import { parseImage } from '../common/pipes/parse-image.pipe';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
@@ -51,6 +55,30 @@ export class WorkExperiencesController {
       resumeId: Number(resumeId),
       companyLogo: file?.path ?? null,
     });
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('resumes/:resumeId/work-experiences/bulk')
+  @CheckResumePolicy(ResumeAction.Manage)
+  @UploadCompanyLogos()
+  creates(
+    @Param('resumeId') resumeId: string,
+    @Body() createWorkExperiencesDto: CreateWorkExperiencesDto,
+    @UploadedFiles(parseImage) files: Array<Express.Multer.File>,
+  ) {
+    const workExperiences = createWorkExperiencesDto.jobTitle.map(
+      (_, i): NewWorkExperience => ({
+        jobTitle: createWorkExperiencesDto.jobTitle.at(i) as string,
+        jobDescription: createWorkExperiencesDto.jobDescription?.at(i) ?? null,
+        company: createWorkExperiencesDto.company?.at(i) ?? null,
+        startDate: createWorkExperiencesDto.startDate.at(i) as Date,
+        endDate: createWorkExperiencesDto.endDate?.at(i) ?? null,
+        companyLogo: files.at(i)?.path ?? null,
+        resumeId: Number(resumeId),
+      }),
+    );
+
+    return this.workExperiencesService.creates(workExperiences);
   }
 
   @HttpCode(HttpStatus.OK)

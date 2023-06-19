@@ -18,6 +18,15 @@ export class WorkExperiencesService {
     return this.workExperiencesRepository.save(workExperience);
   }
 
+  async creates(newWorkExperiences: NewWorkExperience[]) {
+    const workExperiences =
+      this.workExperiencesRepository.create(newWorkExperiences);
+
+    await this.workExperiencesRepository.insert(workExperiences);
+
+    return workExperiences;
+  }
+
   findAllByResumeId(resumeId: number) {
     return this.workExperiencesRepository.findBy({ resumeId });
   }
