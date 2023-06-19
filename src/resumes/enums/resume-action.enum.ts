@@ -1,5 +1,3 @@
-enum ResumeAction {
+export enum ResumeAction {
   Manage = 'manage',
 }
-
-export default ResumeAction;

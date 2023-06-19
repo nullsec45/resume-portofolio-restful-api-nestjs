@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { AuthorizedRequest } from '../auth/interface/authorized-request.interface';
 import { WorkExperiencesService } from './work-experiences.service';
 import { WorkExperience } from './entities/work-experiences.entity';
-import WorkExperienceAction from './enums/work-experience-action.enum';
+import { WorkExperienceAction } from './enums/work-experience-action.enum';
 
 @Injectable()
 export class WorkExperiencesGuard implements CanActivate {

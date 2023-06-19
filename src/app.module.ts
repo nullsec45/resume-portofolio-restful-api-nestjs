@@ -1,7 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configValidation } from './common/config/config.validation';
-import ConfigRule from './common/config/config.rule';
+import { ConfigRule } from './common/config/config.rule';
 import { configValue } from './common/config/config.value';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -22,7 +22,7 @@ import { ResponseInterceptor } from '../common/response/response.interceptor';
 import { AuthGuard } from '../auth/auth.guard';
 import { AuthorizedRequest } from '../auth/interface/authorized-request.interface';
 import { ResumesGuard } from './resumes.guard';
-import ResumeAction from './enums/resume-action.enum';
+import { ResumeAction } from './enums/resume-action.enum';
 import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
