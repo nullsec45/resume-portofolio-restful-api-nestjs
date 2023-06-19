@@ -27,13 +27,48 @@ import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
 import { UploadProfilePicture } from './decorators/upload-profile-picture.decorator';
 import { parseImage } from '../common/validators/pipes/parse-image.pipe';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { SuccessResponseDto } from '../common/response/dto/success-response.dto';
+import { FailedResponseDto } from '../common/response/dto/failed-response.dto';
+import { SuccessSchema } from '../common/response/constants/success-schema.constant';
+import { FailedSchema } from '../common/response/constants/failed-schema.constant';
 
+@ApiBearerAuth()
+@ApiUnauthorizedResponse(
+  FailedSchema(`JWT token couldn't be found`, HttpStatus.UNAUTHORIZED),
+)
+@ApiTags('resumes')
+@ApiExtraModels(SuccessResponseDto, FailedResponseDto, Resume)
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
 @UseGuards(AuthGuard, ResumesGuard)
 export class ResumesController {
   constructor(private readonly resumesService: ResumesService) {}
 
+  /**
+   * Create a new resume.
+   */
+  @ApiConsumes(
+    'multipart/form-data',
+    'application/x-www-form-urlencoded',
+    'application/json',
+  )
+  @ApiCreatedResponse(SuccessSchema(Resume, HttpStatus.CREATED))
+  @ApiBadRequestResponse(
+    FailedSchema(['name must be a string'], HttpStatus.BAD_REQUEST),
+  )
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @UploadProfilePicture()
@@ -49,12 +84,30 @@ export class ResumesController {
     });
   }
 
+  /**
+   * Get all resumes for the authenticated user.
+   */
+  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK, true))
   @HttpCode(HttpStatus.OK)
   @Get()
   findAll(@Request() req: AuthorizedRequest) {
     return this.resumesService.findAllByUserId(req.user.sub);
   }
 
+  /**
+   * Get a specific resume by ID.
+   */
+  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK, true))
+  @ApiBadRequestResponse(
+    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
+  )
+  @ApiNotFoundResponse(
+    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
+  )
+  @ApiForbiddenResponse(
+    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
+  )
+  @ApiParam({ name: 'resumeId', type: Number })
   @HttpCode(HttpStatus.OK)
   @Get(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
@@ -62,6 +115,25 @@ export class ResumesController {
     return resume;
   }
 
+  /**
+   * Update a specific resume by ID.
+   */
+  @ApiConsumes(
+    'multipart/form-data',
+    'application/x-www-form-urlencoded',
+    'application/json',
+  )
+  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK))
+  @ApiBadRequestResponse(
+    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
+  )
+  @ApiNotFoundResponse(
+    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
+  )
+  @ApiForbiddenResponse(
+    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
+  )
+  @ApiParam({ name: 'resumeId', type: Number })
   @HttpCode(HttpStatus.OK)
   @Patch(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
@@ -79,6 +151,19 @@ export class ResumesController {
     );
   }
 
+  /**
+   * Delete a specific resume by ID.
+   */
+  @ApiBadRequestResponse(
+    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
+  )
+  @ApiNotFoundResponse(
+    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
+  )
+  @ApiForbiddenResponse(
+    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
+  )
+  @ApiParam({ name: 'resumeId', type: Number })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
