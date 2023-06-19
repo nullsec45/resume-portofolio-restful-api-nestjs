@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthorizedRequest } from '../auth/interfaces/authorized-request.interface';
 import { ResumesService } from './resumes.service';
@@ -25,6 +30,10 @@ export class ResumesGuard implements CanActivate {
 
     if (resumeId === undefined) {
       return true;
+    }
+
+    if (isNaN(Number(resumeId)) === true) {
+      throw new BadRequestException(':resumeId should be a number');
     }
 
     const resume = await this.resumesService.findOneOrFail(Number(resumeId));
