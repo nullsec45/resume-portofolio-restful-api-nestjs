@@ -17,12 +17,12 @@ export class CreateWorkExperienceDto {
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  jobDescription: string;
+  jobDescription: string | null;
 
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  company: string;
+  company: string | null;
 
   @IsNotEmpty()
   @IsDateString(
