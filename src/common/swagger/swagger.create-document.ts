@@ -13,6 +13,7 @@ export const createSwaggerDocument = ({
   port: number;
 }) => {
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Resume API')
     .setDescription('API for managing resumes')
     .setVersion('1.0')

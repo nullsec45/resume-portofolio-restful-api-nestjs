@@ -18,6 +18,7 @@ import { RegisterDto } from './dto/register.dto';
 import { ResponseInterceptor } from '../common/response/response.interceptor';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiExtraModels,
   ApiOkResponse,
@@ -77,6 +78,7 @@ export class AuthController {
   /**
    * Profile endpoint to get the authenticated user's profile.
    */
+  @ApiBearerAuth()
   @ApiOkResponse(SuccessSchema(JwtUserPayloadDto, HttpStatus.OK))
   @ApiUnauthorizedResponse(
     FailedSchema(`JWT token couldn't be found`, HttpStatus.UNAUTHORIZED),
