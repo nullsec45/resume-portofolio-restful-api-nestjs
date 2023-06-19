@@ -31,7 +31,7 @@ export const SuccessSchema = (
 ): ApiResponseOptions => ({
   schema: {
     allOf: [
-      { $ref: getSchemaPath(SuccessResponseDto) },
+      { $ref: getSchemaPath(SuccessResponseDto<Model>) },
       {
         properties: {
           data: schemaData(model, isArray),
