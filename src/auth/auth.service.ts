@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { SuccessfulSignInDto } from './dto/successful-sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,9 +29,9 @@ export class AuthService {
 
     const payload = { sub: user.id, username: user.username };
 
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    return new SuccessfulSignInDto({
+      accessToken: await this.jwtService.signAsync(payload),
+    });
   }
 
   async register(registerDto: RegisterDto) {
