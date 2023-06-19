@@ -32,11 +32,13 @@ export class User {
 
   /**
    * User's password (encrypted or hashed).
+   * This property is excluded from serialization.
    *
-   * @example "12345678"
+   * @example "$2b$08$rVoeNsjYw/UnCrOi0LxFkOW4IqDCab6MkwReoVLCy.nIIkzAWPO6C"
    */
   @Column()
   @Exclude()
+  @ApiHideProperty()
   password: string;
 
   /**
@@ -57,6 +59,7 @@ export class User {
 
   /**
    * List of resumes associated with the user.
+   * This property is excluded from serialization.
    */
   @OneToMany(() => Resume, (resume) => resume.user)
   @Exclude()
