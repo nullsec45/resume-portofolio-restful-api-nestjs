@@ -4,8 +4,10 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+import { SwaggerModule } from '@nestjs/swagger';
+import { createSwaggerDocument } from './common/swagger/swagger.create-document';
 
-async function bootstrap() {
+const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule.register(),
     {
@@ -25,6 +27,9 @@ async function bootstrap() {
     }),
   );
 
+  SwaggerModule.setup('docs', app, createSwaggerDocument({ app, port }));
+
   await app.listen(port);
-}
+};
+
 bootstrap();
