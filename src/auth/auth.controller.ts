@@ -19,6 +19,7 @@ import { ResponseInterceptor } from '../common/response/response.interceptor';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConsumes,
   ApiCreatedResponse,
   ApiExtraModels,
   ApiOkResponse,
@@ -49,6 +50,7 @@ export class AuthController {
   /**
    * Sign in endpoint for user authentication.
    */
+  @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
   @ApiOkResponse(SuccessSchema(SuccessfulSignInDto, HttpStatus.OK))
   @ApiUnauthorizedResponse(
     FailedSchema('Invalid username or password', HttpStatus.UNAUTHORIZED),
@@ -62,6 +64,7 @@ export class AuthController {
   /**
    * Register endpoint for creating a new user.
    */
+  @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
   @ApiCreatedResponse(SuccessSchema(User, HttpStatus.CREATED))
   @ApiBadRequestResponse(
     FailedSchema(
