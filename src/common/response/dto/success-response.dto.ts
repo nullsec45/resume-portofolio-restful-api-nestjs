@@ -20,13 +20,9 @@ export class SuccessResponseDto<T> {
    *
    * @example
     {
-      "data": {
-        "sub": 1,
-        "iat": 1624096800,
-        "exp": 1624097100
-      },
-      "statusCode": 200,
-      "message": "OK"
+      "sub": 1,
+      "iat": 1624096800,
+      "exp": 1624097100
     }
    */
   @ApiProperty({ type: () => Object })
