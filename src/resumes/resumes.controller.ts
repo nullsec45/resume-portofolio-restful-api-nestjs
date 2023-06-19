@@ -12,7 +12,6 @@ import {
   HttpStatus,
   Request,
   UploadedFile,
-  ParseFilePipe,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ResumesService } from './resumes.service';
@@ -20,14 +19,14 @@ import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
 import { ResponseInterceptor } from '../common/response/response.interceptor';
 import { AuthGuard } from '../auth/auth.guard';
-import { AuthorizedRequest } from '../auth/interface/authorized-request.interface';
+import { AuthorizedRequest } from '../auth/interfaces/authorized-request.interface';
 import { ResumesGuard } from './resumes.guard';
 import { ResumeAction } from './enums/resume-action.enum';
 import { CheckResumePolicy } from './decorators/check-resume-policy.decorator';
 import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
 import { UploadProfilePicture } from './decorators/upload-profile-picture.decorator';
-import { parseImage } from '../common/pipes/parse-image.pipe';
+import { parseImage } from '../common/validators/pipes/parse-image.pipe';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })

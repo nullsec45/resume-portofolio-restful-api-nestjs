@@ -31,7 +31,7 @@ import { UploadCompanyLogo } from './decorators/upload-company-logo.decorator';
 import { CreateWorkExperiencesDto } from './dto/create-work-experiences.dto';
 import { NewWorkExperience } from './types/new-work-experience.type';
 import { UploadCompanyLogos } from './decorators/upload-company-logos.decorator';
-import { parseImage } from '../common/pipes/parse-image.pipe';
+import { parseImage } from '../common/validators/pipes/parse-image.pipe';
 
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1' })

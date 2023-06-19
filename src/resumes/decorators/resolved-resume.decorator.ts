@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AuthorizedRequest } from '../../auth/interface/authorized-request.interface';
+import { AuthorizedRequest } from '../../auth/interfaces/authorized-request.interface';
 import { Resume } from '../entities/resumes.entity';
 
 export const ResolvedResume = createParamDecorator(

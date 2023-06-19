@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AuthorizedRequest } from '../auth/interface/authorized-request.interface';
+import { AuthorizedRequest } from '../auth/interfaces/authorized-request.interface';
 import { ResumesService } from './resumes.service';
 import { ResumeAction } from './enums/resume-action.enum';
 import { Resume } from './entities/resumes.entity';

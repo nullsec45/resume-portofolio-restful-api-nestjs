@@ -3,7 +3,7 @@ import {
   ExecutionContext,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { AuthorizedRequest } from '../../auth/interface/authorized-request.interface';
+import { AuthorizedRequest } from '../../auth/interfaces/authorized-request.interface';
 import { WorkExperience } from '../entities/work-experiences.entity';
 
 export const ResolvedWorkExperience = createParamDecorator(

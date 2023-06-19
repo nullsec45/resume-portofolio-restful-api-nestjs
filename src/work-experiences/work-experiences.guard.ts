@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AuthorizedRequest } from '../auth/interface/authorized-request.interface';
+import { AuthorizedRequest } from '../auth/interfaces/authorized-request.interface';
 import { WorkExperiencesService } from './work-experiences.service';
 import { WorkExperience } from './entities/work-experiences.entity';
 import { WorkExperienceAction } from './enums/work-experience-action.enum';
