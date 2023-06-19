@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateWorkExperienceDto } from './dto/create-work-experience.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WorkExperience } from './entities/work-experiences.entity';
+import { NewWorkExperience } from './types/new-work-experience.type';
 
 @Injectable()
 export class WorkExperiencesService {
@@ -11,13 +11,9 @@ export class WorkExperiencesService {
     private readonly workExperiencesRepository: Repository<WorkExperience>,
   ) {}
 
-  create(
-    createWorkExperienceDto: CreateWorkExperienceDto &
-      Pick<WorkExperience, 'resumeId' | 'companyLogo'>,
-  ) {
-    const workExperience = this.workExperiencesRepository.create(
-      createWorkExperienceDto,
-    );
+  create(newWorkExperience: NewWorkExperience) {
+    const workExperience =
+      this.workExperiencesRepository.create(newWorkExperience);
 
     return this.workExperiencesRepository.save(workExperience);
   }
