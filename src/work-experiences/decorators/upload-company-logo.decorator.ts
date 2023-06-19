@@ -2,8 +2,8 @@ import { UseInterceptors, applyDecorators } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerLocalStorage } from '../../common/multer/storages/local.storage';
 
-export function UploadCompanyLogo() {
-  return applyDecorators(
+export const UploadCompanyLogo = () =>
+  applyDecorators(
     UseInterceptors(
       FileInterceptor('companyLogo', {
         storage: multerLocalStorage(
@@ -12,4 +12,3 @@ export function UploadCompanyLogo() {
       }),
     ),
   );
-}
