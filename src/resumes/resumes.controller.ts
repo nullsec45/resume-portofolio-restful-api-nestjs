@@ -27,30 +27,14 @@ import { ResolvedResume } from './decorators/resolved-resume.decorator';
 import { Resume } from './entities/resumes.entity';
 import { UploadProfilePicture } from './decorators/upload-profile-picture.decorator';
 import { parseImage } from '../common/validators/pipes/parse-image.pipe';
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiConsumes,
-  ApiCreatedResponse,
-  ApiExtraModels,
-  ApiForbiddenResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiParam,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
-import { SuccessResponseDto } from '../common/response/dto/success-response.dto';
-import { FailedResponseDto } from '../common/response/dto/failed-response.dto';
-import { SuccessSchema } from '../common/response/constants/success-schema.constant';
-import { FailedSchema } from '../common/response/constants/failed-schema.constant';
+import { ApiCreateResume } from './docs/api-create-resume.doc';
+import { ApiFindAllResumes } from './docs/api-find-all-resumes.doc';
+import { ApiFindOneResume } from './docs/api-find-one-resume.doc';
+import { ApiUpdateResume } from './docs/api-update-resume.doc';
+import { ApiDeleteResume } from './docs/api-delete-resume.doc';
+import { ApiResume } from './docs/api-resume.doc';
 
-@ApiBearerAuth()
-@ApiUnauthorizedResponse(
-  FailedSchema(`JWT token couldn't be found`, HttpStatus.UNAUTHORIZED),
-)
-@ApiTags('resumes')
-@ApiExtraModels(SuccessResponseDto, FailedResponseDto, Resume)
+@ApiResume()
 @UseInterceptors(ResponseInterceptor, ClassSerializerInterceptor)
 @Controller({ version: '1', path: 'resumes' })
 @UseGuards(AuthGuard, ResumesGuard)
@@ -60,15 +44,7 @@ export class ResumesController {
   /**
    * Create a new resume.
    */
-  @ApiConsumes(
-    'multipart/form-data',
-    'application/x-www-form-urlencoded',
-    'application/json',
-  )
-  @ApiCreatedResponse(SuccessSchema(Resume, HttpStatus.CREATED))
-  @ApiBadRequestResponse(
-    FailedSchema(['name must be a string'], HttpStatus.BAD_REQUEST),
-  )
+  @ApiCreateResume()
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @UploadProfilePicture()
@@ -87,7 +63,7 @@ export class ResumesController {
   /**
    * Get all resumes for the authenticated user.
    */
-  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK, true))
+  @ApiFindAllResumes()
   @HttpCode(HttpStatus.OK)
   @Get()
   findAll(@Request() req: AuthorizedRequest) {
@@ -97,17 +73,7 @@ export class ResumesController {
   /**
    * Get a specific resume by ID.
    */
-  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK, true))
-  @ApiBadRequestResponse(
-    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
-  )
-  @ApiNotFoundResponse(
-    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
-  )
-  @ApiForbiddenResponse(
-    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
-  )
-  @ApiParam({ name: 'resumeId', type: Number })
+  @ApiFindOneResume()
   @HttpCode(HttpStatus.OK)
   @Get(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
@@ -118,22 +84,7 @@ export class ResumesController {
   /**
    * Update a specific resume by ID.
    */
-  @ApiConsumes(
-    'multipart/form-data',
-    'application/x-www-form-urlencoded',
-    'application/json',
-  )
-  @ApiOkResponse(SuccessSchema(Resume, HttpStatus.OK))
-  @ApiBadRequestResponse(
-    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
-  )
-  @ApiNotFoundResponse(
-    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
-  )
-  @ApiForbiddenResponse(
-    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
-  )
-  @ApiParam({ name: 'resumeId', type: Number })
+  @ApiUpdateResume()
   @HttpCode(HttpStatus.OK)
   @Patch(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
@@ -154,16 +105,7 @@ export class ResumesController {
   /**
    * Delete a specific resume by ID.
    */
-  @ApiBadRequestResponse(
-    FailedSchema(':resumeId should be a number', HttpStatus.BAD_REQUEST),
-  )
-  @ApiNotFoundResponse(
-    FailedSchema('Resume with id 1 not found', HttpStatus.NOT_FOUND),
-  )
-  @ApiForbiddenResponse(
-    FailedSchema('Forbidden resource', HttpStatus.FORBIDDEN),
-  )
-  @ApiParam({ name: 'resumeId', type: Number })
+  @ApiDeleteResume()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
