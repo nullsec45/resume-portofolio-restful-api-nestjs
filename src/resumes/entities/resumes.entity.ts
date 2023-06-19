@@ -34,11 +34,12 @@ export class Resume {
   updatedAt: Date;
 
   @ManyToOne(() => User, (user) => user.resumes, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   user: User;
 
-  @OneToMany(() => WorkExperience, (workExperience) => workExperience.resume)
+  @OneToMany(() => WorkExperience, (workExperience) => workExperience.resume, {
+    cascade: true,
+  })
   workExperiences: WorkExperience[];
 }

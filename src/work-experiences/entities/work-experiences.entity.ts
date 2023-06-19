@@ -43,7 +43,6 @@ export class WorkExperience {
 
   @Exclude()
   @ManyToOne(() => Resume, (resume) => resume.workExperiences, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   resume: Resume;
