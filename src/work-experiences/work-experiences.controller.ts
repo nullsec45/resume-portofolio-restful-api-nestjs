@@ -64,7 +64,7 @@ export class WorkExperiencesController {
   creates(
     @Param('resumeId') resumeId: number,
     @Body() createWorkExperiencesDto: CreateWorkExperiencesDto,
-    @UploadedFiles(parseImage) files: Array<Express.Multer.File>,
+    @UploadedFiles(parseImage) files: Array<Express.Multer.File> | undefined,
   ) {
     const workExperiences = createWorkExperiencesDto.jobTitle.map(
       (_, i): NewWorkExperience => ({
@@ -73,7 +73,7 @@ export class WorkExperiencesController {
         company: createWorkExperiencesDto.company?.at(i) ?? null,
         startDate: createWorkExperiencesDto.startDate.at(i) as Date,
         endDate: createWorkExperiencesDto.endDate?.at(i) ?? null,
-        companyLogo: files.at(i)?.path ?? null,
+        companyLogo: files?.at(i)?.path ?? null,
         resumeId,
       }),
     );
