@@ -9,6 +9,9 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
+    const appEnv =
+      this.configService.get<`${ApplicationEnvironment}`>('app.env');
+
     return {
       type: this.configService.get<`${DatabaseEnvironment}`>('db.type'),
       host: this.configService.get<string>('db.host'),
@@ -18,15 +21,8 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('db.database'),
       autoLoadEntities: true,
       synchronize:
-        this.configService.get<`${ApplicationEnvironment}`>('app.env') ===
-        'development'
-          ? true
-          : false,
-      logging:
-        this.configService.get<`${ApplicationEnvironment}`>('app.env') ===
-        'development'
-          ? true
-          : false,
+        appEnv === 'development' || appEnv === 'testing' ? true : false,
+      logging: appEnv === 'development' ? true : false,
     };
   }
 }
