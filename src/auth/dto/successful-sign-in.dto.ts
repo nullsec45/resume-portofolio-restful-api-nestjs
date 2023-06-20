@@ -6,7 +6,7 @@ export class SuccessfulSignInDto {
    */
   accessToken: string;
 
-  constructor({ accessToken }: SuccessfulSignInDto) {
+  constructor({ accessToken = '' }: Partial<SuccessfulSignInDto>) {
     this.accessToken = accessToken;
   }
 }
