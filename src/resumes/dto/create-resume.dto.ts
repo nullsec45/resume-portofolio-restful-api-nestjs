@@ -26,6 +26,6 @@ export class CreateResumeDto {
    * The profile picture file for the resume.
    */
   @IsOptional()
-  @ApiPropertyOptional({ type: 'string', format: 'binary' })
+  @ApiPropertyOptional({ type: String, format: 'binary' })
   profilePicture: any;
 }
