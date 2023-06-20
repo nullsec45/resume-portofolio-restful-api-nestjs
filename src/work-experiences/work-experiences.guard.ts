@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthorizedRequest } from '../auth/interfaces/authorized-request.interface';
 import { WorkExperiencesService } from './work-experiences.service';
@@ -27,6 +32,10 @@ export class WorkExperiencesGuard implements CanActivate {
 
     if (workExperienceId === undefined) {
       return true;
+    }
+
+    if (isNaN(Number(workExperienceId)) === true) {
+      throw new BadRequestException(':workExperienceId should be a number');
     }
 
     const workExperience = await this.workExperiencesService.findOneOrFail(
