@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 import { SuccessResponseDto } from './dto/success-response.dto';
 
 @Injectable()
-export class ResponseInterceptor<T>
+export class ResponseInterceptor<T = any>
   implements NestInterceptor<T, SuccessResponseDto<T>>
 {
   intercept(

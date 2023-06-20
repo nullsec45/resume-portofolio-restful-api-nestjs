@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class SuccessResponseDto<T> {
+export class SuccessResponseDto<T = any> {
   /**
    * The HTTP status code of the response.
    *
