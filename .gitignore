@@ -1,6 +1,6 @@
 # project directory
 .env
-/public/uploads/
+/storages/
 
 # compiled output
 /dist
