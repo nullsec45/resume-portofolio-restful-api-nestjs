@@ -20,6 +20,9 @@ export class TypeOrmService implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('db.password'),
       database: this.configService.get<string>('db.database'),
       autoLoadEntities: true,
+      ssl: {
+        rejectUnauthorized: this.configService.get<boolean>('db.ssl'),
+      },
       synchronize:
         appEnv === 'development' || appEnv === 'testing' ? true : false,
       logging: appEnv === 'development' ? true : false,
