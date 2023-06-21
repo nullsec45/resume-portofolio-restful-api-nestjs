@@ -20,4 +20,8 @@ export class UsersService {
   findOneByUsername(username: string) {
     return this.usersRepository.findOneBy({ username });
   }
+
+  deleteAll() {
+    return this.usersRepository.delete({});
+  }
 }
