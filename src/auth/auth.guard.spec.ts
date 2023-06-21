@@ -21,7 +21,7 @@ describe('AuthGuard', () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [AuthGuard, JwtService],
+      providers: [AuthGuard],
     })
       .useMocker((token) => {
         if (token === JwtService) {
