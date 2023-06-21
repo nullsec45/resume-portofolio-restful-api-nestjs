@@ -109,7 +109,7 @@ export class ResumesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':resumeId')
   @CheckResumePolicy(ResumeAction.Manage)
-  remove(@Param('resumeId') resumeId: string) {
-    return this.resumesService.remove(Number(resumeId));
+  remove(@Param('resumeId') resumeId: number) {
+    return this.resumesService.remove(resumeId);
   }
 }
