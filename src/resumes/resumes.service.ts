@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateResumeDto } from './dto/create-resume.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Resume } from './entities/resumes.entity';
 import { Repository } from 'typeorm';
+import { NewResume } from './types/new-resume.type';
 
 @Injectable()
 export class ResumesService {
@@ -11,13 +11,18 @@ export class ResumesService {
     private readonly resumesRepository: Repository<Resume>,
   ) {}
 
-  create(
-    createResumeDto: CreateResumeDto &
-      Pick<Resume, 'userId' | 'profilePicture'>,
-  ) {
+  create(createResumeDto: NewResume) {
     const resume = this.resumesRepository.create(createResumeDto);
 
     return this.resumesRepository.save(resume);
+  }
+
+  async creates(newResumes: NewResume[]) {
+    const resumes = this.resumesRepository.create(newResumes);
+
+    await this.resumesRepository.insert(resumes);
+
+    return resumes;
   }
 
   findAllByUserId(userId: number) {
@@ -44,5 +49,9 @@ export class ResumesService {
 
   remove(id: number) {
     return this.resumesRepository.delete({ id });
+  }
+
+  deleteAll() {
+    return this.resumesRepository.delete({});
   }
 }
