@@ -51,13 +51,16 @@ export class ResumesController {
   create(
     @Request() req: AuthorizedRequest,
     @Body() createResumeDto: CreateResumeDto,
-    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage)
+    file: Express.MulterS3.File | undefined,
   ) {
+    const profilePicture = file?.key || file?.filename;
+
     return this.resumesService.create({
       ...createResumeDto,
       userId: req.user.sub,
       profilePicture:
-        file?.filename !== undefined ? `storages/${file?.filename}` : null,
+        profilePicture !== undefined ? `storages/${profilePicture}` : null,
     });
   }
 
@@ -93,13 +96,15 @@ export class ResumesController {
   update(
     @ResolvedResume() resume: Resume,
     @Body() updateResumeDto: UpdateResumeDto,
-    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage) file: Express.MulterS3.File | undefined,
   ) {
+    const profilePicture = file?.key || file?.filename;
+
     return this.resumesService.save(
       Object.assign(resume, {
         ...updateResumeDto,
         profilePicture:
-          file?.filename !== undefined ? `storages/${file?.filename}` : null,
+          profilePicture !== undefined ? `storages/${profilePicture}` : null,
       }),
     );
   }

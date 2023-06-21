@@ -60,13 +60,14 @@ export class WorkExperiencesController {
   create(
     @Param('resumeId') resumeId: number,
     @Body() createWorkExperienceDto: CreateWorkExperienceDto,
-    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage) file: Express.MulterS3.File | undefined,
   ) {
+    const companyLogo = file?.key || file?.filename;
+
     return this.workExperiencesService.create({
       ...createWorkExperienceDto,
       resumeId,
-      companyLogo:
-        file?.filename !== undefined ? `storages/${file?.filename}` : null,
+      companyLogo: companyLogo !== undefined ? `storages/${companyLogo}` : null,
     });
   }
 
@@ -81,18 +82,24 @@ export class WorkExperiencesController {
   creates(
     @Param('resumeId') resumeId: number,
     @Body() createWorkExperiencesDto: CreateWorkExperiencesDto,
-    @UploadedFiles(parseImage) files: Array<Express.Multer.File> | undefined,
+    @UploadedFiles(parseImage) files: Array<Express.MulterS3.File> | undefined,
   ) {
     const workExperiences = createWorkExperiencesDto.jobTitle.map(
-      (_, i): NewWorkExperience => ({
-        jobTitle: createWorkExperiencesDto.jobTitle.at(i) as string,
-        jobDescription: createWorkExperiencesDto.jobDescription?.at(i) ?? null,
-        company: createWorkExperiencesDto.company?.at(i) ?? null,
-        startDate: createWorkExperiencesDto.startDate.at(i) as Date,
-        endDate: createWorkExperiencesDto.endDate?.at(i) ?? null,
-        companyLogo: files?.at(i)?.path ?? null,
-        resumeId,
-      }),
+      (_, i): NewWorkExperience => {
+        const companyLogo = files?.at(i)?.key || files?.at(i)?.filename;
+
+        return {
+          jobTitle: createWorkExperiencesDto.jobTitle.at(i) as string,
+          jobDescription:
+            createWorkExperiencesDto.jobDescription?.at(i) ?? null,
+          company: createWorkExperiencesDto.company?.at(i) ?? null,
+          startDate: createWorkExperiencesDto.startDate.at(i) as Date,
+          endDate: createWorkExperiencesDto.endDate?.at(i) ?? null,
+          companyLogo:
+            companyLogo !== undefined ? `storages/${companyLogo}` : null,
+          resumeId,
+        };
+      },
     );
 
     return this.workExperiencesService.creates(workExperiences);
@@ -131,13 +138,15 @@ export class WorkExperiencesController {
   update(
     @ResolvedWorkExperience() workExperience: WorkExperience,
     @Body() updateWorkExperienceDto: UpdateWorkExperienceDto,
-    @UploadedFile(parseImage) file: Express.Multer.File | undefined,
+    @UploadedFile(parseImage) file: Express.MulterS3.File | undefined,
   ) {
+    const companyLogo = file?.key || file?.filename;
+
     return this.workExperiencesService.save(
       Object.assign(workExperience, {
         ...updateWorkExperienceDto,
         companyLogo:
-          file?.filename !== undefined ? `storages/${file?.filename}` : null,
+          companyLogo !== undefined ? `storages/${companyLogo}` : null,
       }),
     );
   }
