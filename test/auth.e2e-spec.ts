@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
@@ -11,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtUserPayloadDto } from '../src/auth/dto/jwt-user-payload.dto';
 import { User } from '../src/users/entities/users.entity';
 import { SuccessfulSignInDto } from '../src/auth/dto/successful-sign-in.dto';
+import { createFakeUser } from './utils/create-fake-user.util';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -31,10 +31,13 @@ describe('AuthController (e2e)', () => {
     await app.init();
   });
 
+  beforeEach(async () => {
+    await usersService.deleteAll();
+  });
+
   describe('/auth/login (POST)', () => {
     it('should return response containing access token on success', async () => {
-      const username = faker.internet.userName() + Date.now();
-      const password = faker.internet.password();
+      const { username, password } = createFakeUser();
       await usersService.create({
         username,
         password: await bcrypt.hash(password, 1),
@@ -59,8 +62,7 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should return unauthorized response if username or password invalid', async () => {
-      const username = faker.internet.userName();
-      const password = faker.internet.password();
+      const { username, password } = createFakeUser();
 
       const response = await request(app.getHttpServer())
         .post('/auth/login')
@@ -72,8 +74,7 @@ describe('AuthController (e2e)', () => {
 
   describe('/auth/register (POST)', () => {
     it('should return created response if user is successfully created', async () => {
-      const username = faker.internet.userName() + Date.now();
-      const password = faker.internet.password();
+      const { username, password } = createFakeUser();
 
       const response = await request(app.getHttpServer())
         .post('/auth/register')
@@ -102,8 +103,7 @@ describe('AuthController (e2e)', () => {
 
   describe('/auth/profile (GET)', () => {
     it('should return current jwt payload when authenticated', async () => {
-      const username = faker.internet.userName() + Date.now();
-      const password = faker.internet.password();
+      const { username, password } = createFakeUser();
       const user = await usersService.create({
         username,
         password: await bcrypt.hash(password, 1),
