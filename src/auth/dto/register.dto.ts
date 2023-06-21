@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { Match } from '../decorators/match.decorator';
+import { Match } from '../../common/validators/decorators/match.decorator';
 
 export class RegisterDto {
   /**
