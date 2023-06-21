@@ -65,7 +65,8 @@ export class WorkExperiencesController {
     return this.workExperiencesService.create({
       ...createWorkExperienceDto,
       resumeId,
-      companyLogo: file?.path ?? null,
+      companyLogo:
+        file?.filename !== undefined ? `storages/${file?.filename}` : null,
     });
   }
 
@@ -135,7 +136,8 @@ export class WorkExperiencesController {
     return this.workExperiencesService.save(
       Object.assign(workExperience, {
         ...updateWorkExperienceDto,
-        companyLogo: file?.path ?? null,
+        companyLogo:
+          file?.filename !== undefined ? `storages/${file?.filename}` : null,
       }),
     );
   }

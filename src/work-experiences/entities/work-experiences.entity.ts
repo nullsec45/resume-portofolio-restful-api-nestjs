@@ -55,7 +55,7 @@ export class WorkExperience {
   /**
    * Logo of the company in the work experience.
    *
-   * @example "public/uploads/resumes/images/companies/92665c8da90f4dc344b878ed0970bdbd.jpeg"
+   * @example "storages/92665c8da90f4dc344b878ed0970bdbd.jpeg"
    */
   @Column({ nullable: true, type: String })
   companyLogo: string | null;

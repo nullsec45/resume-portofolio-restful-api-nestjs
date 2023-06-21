@@ -56,7 +56,8 @@ export class ResumesController {
     return this.resumesService.create({
       ...createResumeDto,
       userId: req.user.sub,
-      profilePicture: file?.path ?? null,
+      profilePicture:
+        file?.filename !== undefined ? `storages/${file?.filename}` : null,
     });
   }
 
@@ -97,7 +98,8 @@ export class ResumesController {
     return this.resumesService.save(
       Object.assign(resume, {
         ...updateResumeDto,
-        profilePicture: file?.path ?? null,
+        profilePicture:
+          file?.filename !== undefined ? `storages/${file?.filename}` : null,
       }),
     );
   }

@@ -53,7 +53,7 @@ export class Resume {
    * The URL path to the profile picture of the resume.
    * It can be null if no profile picture is available.
    *
-   * @example "public/uploads/resumes/images/profiles/89bf78656bfed2c546375178826f23df.png"
+   * @example "storages/89bf78656bfed2c546375178826f23df.png"
    */
   @Column({ nullable: true, type: String })
   profilePicture: string | null;
