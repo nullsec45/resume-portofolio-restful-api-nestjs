@@ -1,73 +1,111 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
+- [Description](#description)
+- [Installation](#installation)
+- [Environment Configuration](#environment-configuration)
+- [API Documentation](#api-documentation)
+- [Running Tests](#running-tests)
 
 ## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Resume API built with Node.js, TypeScript, NestJs and TypeORM. Provided API documentation via Swagger, authentication using JWT, database via MySQL or MariaDB, and AWS S3 or local storage driver support.
 
 ## Installation
 
+- Requirements
+  - Node.js >= 18
+  - MySQL or MariaDB
+
+- Clone this repository
+  ```bash
+  $ git clone https://github.com/yusuftaufiq/yusuftaufiq-api-developer-14Jun2023.git
+  ```
+
+- Install all required dependencies
+  ```bash
+  $ npm install
+  ```
+
+- Copy the environment file from `.env.example` to `.env`. Explanations of the configuration can be seen in the [following section](#environment-configuration).
+
+- Start Node.js with one of the following commands:
+  ```bash
+  # development
+  $ npm run start
+
+  # watch mode
+  $ npm run start:dev
+
+  # production mode
+  $ npm run build
+  $ npm run start:prod
+
+  # run migration if your APP_ENV in .env file is configured to production
+  $ npm run typeorm migration:run
+  ```
+
+## Environment Configuration
+- Application
+  - `APP_ENV`: Define the current application environment. Possible values are `development`, `production`, and `testing` with the following details:
+    - `development`: Enable TypeORM's query logging and sync database features
+    - `production`: Disable query logging and the TypeORM database synchronization feature, all database schema changes must use migration with the following command:
+      ```bash
+      $ npm run typeorm migration:run
+      ```
+    - `testing`: Disable query logging but enable TypeORM to sync the database
+  - `APP_PORT`
+- Database
+  - `DB_TYPE`: Determine the database type. Currently supported values are `mysql` or `mariadb`
+  - `DB_HOST`
+  - `DB_PORT`
+  - `DB_DATABASE`
+  - `DB_USERNAME`
+  - `DB_PASSWORD`
+  - `DB_FOREIGN_KEY`: Tell the TypeORM migration to enable or disable foreign keys. Possible values are `true` or `false`.
+  - `DB_SSL`: If true the server will reject any connection which is not authorized with the list of supplied CAs. Possible values are `true` or `false`.
+- Storage
+  - `STORAGE_DRIVER`: File storage driver used to upload a profile picture or company logo. Possible values are `local` or `s3`, where local will upload files to the [`storages`](./storages/) directory and s3 will upload files to the AWS S3
+  - `STORAGE_BUCKET`: AWS S3 storage bucket name, required if storage driver is set to s3
+- JWT
+  - `JWT_SECRET_KEY`: A solid private secret key, for example, a secret key can be generated from https://randomkeygen.com/
+  - `JWT_TOKEN_TTL_IN_SECONDS`: The time before the JWT access token expires.
+
+## API Documentation
+API documentation can be checked in the `/docs` endpoint. Here's a quick overview of all the available endpoints:
+
 ```bash
-$ npm install
+# storages
+/storages/{fileId} [GET]
+
+# auth
+/v1/auth/login (POST)
+/v1/auth/register (POST)
+/v1/auth/profile (GET)
+
+# resumes
+/v1/resumes (POST)
+/v1/resumes (GET)
+/v1/resumes/{resumeId} (GET)
+/v1/resumes/{resumeId} (PATCH)
+/v1/resumes/{resumeId} (DELETE)
+
+# work-experiences
+/v1/resumes/{resumeId}/work-experiences (POST)
+/v1/resumes/{resumeId}/work-experiences (GET)
+/v1/resumes/{resumeId}/work-experiences/bulk (POST)
+/v1/work-experiences/{workExperienceId} (GET)
+/v1/work-experiences/{workExperienceId} (PATCH)
+/v1/work-experiences/{workExperienceId} (DELETE)
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
+## Running Tests
 
 ```bash
 # unit tests
 $ npm run test
 
-# e2e tests
+# e2e tests, make sure database connection in .env.testing environment is configured
 $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
