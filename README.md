@@ -69,7 +69,7 @@ Resume API built with Node.js, TypeScript, NestJs and TypeORM. Provided API docu
   - `JWT_TOKEN_TTL_IN_SECONDS`: The time before the JWT access token expires.
 
 ## API Documentation
-API documentation can be checked in the `/docs` endpoint. Here's a quick overview of all the available endpoints:
+API documentation can be checked in the `/docs` endpoint. Here's a quick overview of all available endpoints, all resumes and work experience are accessible only to the owner (identified by a JWT token):
 
 ```bash
 # storages
